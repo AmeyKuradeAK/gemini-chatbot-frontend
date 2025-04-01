@@ -67,7 +67,7 @@ export default function Chatbot() {
           {/* Use ReactMarkdown and wrap in a div for styling */}
           <div className="whitespace-pre-wrap break-words text-lg text-gray-800">
             <ReactMarkdown components={{
-              code({node, inline, className, children, ...props}: React.ComponentPropsWithoutRef<"code"> & {node?: any}) {
+              code({ node, inline, children, ...props }: { node?: any; inline?: boolean; children: React.ReactNode }) {
                 const codeString = String(children).replace(/\n$/, '');
                 return !inline ? (
                   <div className="relative">
