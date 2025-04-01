@@ -13,7 +13,7 @@ export default function Chatbot() {
     setIsLoading(true); // Start loading animation
 
     try {
-      const res = await fetch("https://gemini-chatbot-backend-nesa.onrender.com", {
+      const res = await fetch("http://localhost:5000/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
@@ -27,16 +27,6 @@ export default function Chatbot() {
     } finally {
       setIsLoading(false); // End loading animation
     }
-  };
-
-  const handleCopy = (code: string) => {
-    navigator.clipboard.writeText(code)
-      .then(() => {
-        alert("Code copied to clipboard!");
-      })
-      .catch(() => {
-        alert("Failed to copy code.");
-      });
   };
 
   return (
@@ -64,28 +54,9 @@ export default function Chatbot() {
       </button>
       {response && (
         <div className="mt-6 p-4 bg-white rounded-lg shadow-md animate-fadeInUp max-w-lg w-full overflow-auto">
-          {/* Use ReactMarkdown and wrap in a div for styling */}
+          {/* Use ReactMarkdown to render the response as Markdown */}
           <div className="whitespace-pre-wrap break-words text-lg text-gray-800">
-            <ReactMarkdown components={{
-              code({ node, inline, children, ...props }: { node?: any; inline?: boolean; children: React.ReactNode }) {
-                const codeString = String(children).replace(/\n$/, '');
-                return !inline ? (
-                  <div className="relative">
-                    <pre className="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
-                      <code className="text-sm font-mono">{codeString}</code>
-                    </pre>
-                    <button
-                      className="absolute top-2 right-2 bg-indigo-600 text-white rounded-md px-2 py-1 text-xs"
-                      onClick={() => handleCopy(codeString)}
-                    >
-                      Copy
-                    </button>
-                  </div>
-                ) : (
-                  <code className="bg-gray-200 p-1 rounded-sm">{children}</code>
-                );
-              }
-            }}>
+            <ReactMarkdown>
               {response}
             </ReactMarkdown>
           </div>
