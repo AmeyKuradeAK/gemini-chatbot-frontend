@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 export default function Chatbot() {
@@ -19,6 +19,9 @@ export default function Chatbot() {
         body: JSON.stringify({ message }),
       });
 
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
       const data = await res.json();
       setResponse(data.reply || "No response from Gemini.");
     } catch (error) {
