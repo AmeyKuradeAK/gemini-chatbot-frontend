@@ -29,6 +29,16 @@ export default function Chatbot() {
     }
   };
 
+  const handleCopy = (code: string) => {
+    navigator.clipboard.writeText(code)
+      .then(() => {
+        alert("Code copied to clipboard!");
+      })
+      .catch(() => {
+        alert("Failed to copy code.");
+      });
+  };
+
   return (
     <div className="flex flex-col items-center p-10 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl shadow-lg animate-fadeIn">
       <h1 className="text-3xl font-extrabold text-white mb-4 animate-fadeInUp">Gemini Chatbot</h1>
@@ -54,9 +64,28 @@ export default function Chatbot() {
       </button>
       {response && (
         <div className="mt-6 p-4 bg-white rounded-lg shadow-md animate-fadeInUp max-w-lg w-full overflow-auto">
-          {/* Use ReactMarkdown to render the response as Markdown */}
+          {/* Use ReactMarkdown and wrap in a div for styling */}
           <div className="whitespace-pre-wrap break-words text-lg text-gray-800">
-            <ReactMarkdown>
+            <ReactMarkdown components={{
+              code({node, inline, className, children, ...props}: React.ComponentPropsWithoutRef<"code"> & {node?: any, inline?: boolean}) {
+                const codeString = String(children).replace(/\n$/, '');
+                return !inline ? (
+                  <div className="relative">
+                    <pre className="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
+                      <code className="text-sm font-mono">{codeString}</code>
+                    </pre>
+                    <button
+                      className="absolute top-2 right-2 bg-indigo-600 text-white rounded-md px-2 py-1 text-xs"
+                      onClick={() => handleCopy(codeString)}
+                    >
+                      Copy
+                    </button>
+                  </div>
+                ) : (
+                  <code className="bg-gray-200 p-1 rounded-sm">{children}</code>
+                );
+              }
+            }}>
               {response}
             </ReactMarkdown>
           </div>
