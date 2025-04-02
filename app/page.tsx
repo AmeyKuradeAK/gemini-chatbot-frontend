@@ -13,7 +13,7 @@ export default function Chatbot() {
     setIsLoading(true); // Start loading animation
 
     try {
-      const res = await fetch("https://gemini-chatbot-backend-tpw6.vercel.app//chat", {
+      const res = await fetch("https://gemini-chatbot-backend-tpw6.vercel.app/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
